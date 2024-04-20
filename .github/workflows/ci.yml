@@ -86,6 +86,7 @@ jobs:
             ea6ne4j2sb.execute-api.eu-central-1.amazonaws.com:443
             github.com:443
             objects.githubusercontent.com:443
+            proxy.golang.org:443
             scanner.sonarcloud.io:443
             sonarcloud.io:443
             storage.googleapis.com:443
