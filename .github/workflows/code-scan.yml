@@ -19,7 +19,7 @@ jobs:
       contents: read
     uses: bytemare/actions/.github/workflows/golangci-lint.yml@v1
     with:
-      config-path: ./.github/golangci.yml
+      config-path: ./.github/.golangci.yml
       scope: ./...
 
   Analyze:
