@@ -1,28 +1,31 @@
 name: Code Scan
 
 on:
-  pull_request:
+  push:
     branches:
       - main
-  push:
+  pull_request:
     branches:
       - main
   schedule:
     # random HH:MM to avoid a load spike on GitHub Actions at 00:00
     - cron: '4 1 * * *'
 
-# Declare default permissions as read-only.
-permissions: read-all
+permissions: {}
 
 jobs:
   Lint:
-    uses: bytemare/actions/.github/workflows/golangci-lint.yml@ac373b63aa8863380de843ddebfd42baabf57703
+    permissions:
+      contents: read
+    uses: ./.github/workflows/golangci-lint.yml
     with:
-      config-path: ./.github/.golangci.yml
+      config-path: ./.github/golangci.yml
       scope: ./...
 
   Analyze:
-    uses: bytemare/actions/.github/workflows/scan-go.yml@ac373b63aa8863380de843ddebfd42baabf57703
+    permissions:
+      contents: read
+    uses: bytemare/actions/.github/workflows/scan-go.yml@v1
     with:
       sonar-configuration: .github/sonar-project.properties
     secrets:

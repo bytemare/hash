@@ -1,18 +1,39 @@
 name: Scorecard Analysis Workflow
+
 on:
-  # Only the default branch is supported. By default all modifications trigger the workflow.
-  branch_protection_rule:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
   schedule:
     # Weekly on Saturdays.
     - cron: '30 1 * * 6'
-  push:
-    branches: [ main ]
 
-# Declare default permissions as read-only.
-permissions: read-all
+permissions: {}
 
 jobs:
-  Analysis:
-    uses: bytemare/actions/.github/workflows/scorecard.yml@ac373b63aa8863380de843ddebfd42baabf57703
+  analysis:
+    permissions:
+      # Needed if using Code scanning alerts
+      security-events: write
+      # Needed for GitHub OIDC token if publish_results is true
+      id-token: write
+      # Needed for nested workflow
+      actions: read
+      attestations: read
+      checks: read
+      contents: read
+      deployments: read
+      issues: read
+      discussions: read
+      packages: read
+      pages: read
+      pull-requests: read
+      repository-projects: read
+      statuses: read
+
+    uses: bytemare/actions/.github/workflows/scorecard.yml@v1
     secrets:
       token: ${{ secrets.SCORECARD_TOKEN }}

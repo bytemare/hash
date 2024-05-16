@@ -10,11 +10,14 @@ on:
   schedule:
     - cron: '31 10 * * 0'
 
-# Declare default permissions as read-only.
-permissions: read-all
+permissions: {}
 
 jobs:
   CodeQL:
-    uses: bytemare/actions/.github/workflows/codeql.yml@ac373b63aa8863380de843ddebfd42baabf57703
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    uses: bytemare/actions/.github/workflows/codeql.yml@v1
     with:
       language: go

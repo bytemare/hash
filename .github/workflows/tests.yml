@@ -1,15 +1,14 @@
-name: Test
+name: Run Tests
 
 on:
-  pull_request:
-    branches:
-      - main
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
-# Declare default permissions as read-only.
-permissions: read-all
+permissions: {}
 
 jobs:
   Test:
@@ -17,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         go: [ '1.22', '1.21' ]
-    uses: bytemare/actions/.github/workflows/test-go.yml@ac373b63aa8863380de843ddebfd42baabf57703
+    uses: bytemare/actions/.github/workflows/test-go.yml@v1
     with:
       command: cd .github && make test
       version: ${{ matrix.go }}
