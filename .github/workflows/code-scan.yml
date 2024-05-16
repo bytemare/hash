@@ -17,7 +17,7 @@ jobs:
   Lint:
     permissions:
       contents: read
-    uses: ./.github/workflows/golangci-lint.yml
+    uses: bytemare/actions/.github/workflows/golangci-lint.yml@v1
     with:
       config-path: ./.github/golangci.yml
       scope: ./...
