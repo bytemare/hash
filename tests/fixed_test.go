@@ -89,7 +89,7 @@ func TestHKDFExpand(t *testing.T) {
 
 			for _, l := range []int{0, h.HashID.Size()} {
 				// Build a pseudorandom key
-				prk := hasher.HKDF(testData.secret, testData.salt, testData.info, l)
+				prk := hasher.HKDFExtract(testData.secret, testData.salt)
 				key := hasher.HKDFExpand(prk, testData.info, l)
 
 				if len(key) != h.HashID.Size() {

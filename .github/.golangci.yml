@@ -276,4 +276,5 @@ run:
   tests: false
 
 output:
-  formats: github-actions
+  formats:
+    - format: github-actions
