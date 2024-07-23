@@ -3,8 +3,6 @@ update:
 	@echo "Updating dependencies..."
 	@cd ../ && go get -u ./...
 	@go mod tidy
-	@echo "Updating Github Actions pins..."
-	@$(foreach file, $(wildcard workflows/*.yml), pin-github-action $(file);)
 
 .PHONY: update-linters
 update-linters:

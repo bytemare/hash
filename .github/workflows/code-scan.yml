@@ -28,6 +28,7 @@ jobs:
     uses: bytemare/workflows/.github/workflows/scan-go.yml@5aadc592bbd38439749217729225aafe434b2e90
     with:
       sonar-configuration: .github/sonar-project.properties
+      coverage-output-file: coverage.out
     secrets:
       github: ${{ secrets.GITHUB_TOKEN }}
       sonar: ${{ secrets.SONAR_TOKEN }}
