@@ -17,7 +17,7 @@ jobs:
   Lint:
     permissions:
       contents: read
-    uses: bytemare/workflows/.github/workflows/golangci-lint.yml@aee385885f85253a22a668094e42e6bbac3fd293
+    uses: bytemare/workflows/.github/workflows/golangci-lint.yml@a2012ce08abc78f05c1a946179c66612a7556591
     with:
       config-path: ./.github/.golangci.yml
       scope: ./...
@@ -25,7 +25,7 @@ jobs:
   Analyze:
     permissions:
       contents: read
-    uses: bytemare/workflows/.github/workflows/scan-go.yml@aee385885f85253a22a668094e42e6bbac3fd293
+    uses: bytemare/workflows/.github/workflows/scan-go.yml@a2012ce08abc78f05c1a946179c66612a7556591
     with:
       sonar-configuration: .github/sonar-project.properties
     secrets:
