@@ -18,6 +18,6 @@ jobs:
       actions: read
       contents: read
       security-events: write
-    uses: bytemare/workflows/.github/workflows/codeql.yml@a2012ce08abc78f05c1a946179c66612a7556591
+    uses: bytemare/workflows/.github/workflows/codeql.yml@de2ec70498cfce43a8e980f86f899a649b1884e8
     with:
       language: go
