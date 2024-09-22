@@ -34,6 +34,6 @@ jobs:
       repository-projects: read
       statuses: read
 
-    uses: bytemare/workflows/.github/workflows/scorecard.yml@c03c82ea5f28d13cabf402a3ce05152c8168c9e8
+    uses: bytemare/workflows/.github/workflows/scorecard.yml@9c83ed0cdeb7241ed56fa8bf946df45b9205ba82
     secrets:
       token: ${{ secrets.SCORECARD_TOKEN }}
