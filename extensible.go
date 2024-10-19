@@ -45,11 +45,12 @@ type xof interface {
 	Reset()
 }
 
-func newXOF(hid Hash) newHash {
+func newXOF(hid Hash, size int) newHash {
 	return func() Hasher {
 		ext := &ExtendableHash{
-			xof: nil,
-			id:  hid,
+			xof:  nil,
+			id:   hid,
+			size: outputSizes[hid],
 		}
 
 		switch hid {
@@ -58,9 +59,9 @@ func newXOF(hid Hash) newHash {
 		case SHAKE256:
 			ext.xof = sha3.NewShake256()
 		case BLAKE2XB:
-			ext.xof, _ = blake2b.NewXOF(blake2b.OutputLengthUnknown, nil)
+			ext.xof, _ = blake2b.NewXOF(uint32(size), nil)
 		case BLAKE2XS:
-			ext.xof, _ = blake2s.NewXOF(blake2s.OutputLengthUnknown, nil)
+			ext.xof, _ = blake2s.NewXOF(uint16(size), nil)
 		}
 
 		return ext
@@ -71,7 +72,8 @@ func newXOF(hid Hash) newHash {
 // cryptographic hash operations of extendable output functions.
 type ExtendableHash struct {
 	xof
-	id Hash
+	id   Hash
+	size int
 }
 
 // Algorithm returns the Hash function identifier.
@@ -80,20 +82,19 @@ func (h *ExtendableHash) Algorithm() Hash {
 }
 
 // Hash returns the hash of the input argument with size output length.
-func (h *ExtendableHash) Hash(size uint, input ...[]byte) []byte {
+func (h *ExtendableHash) Hash(input ...[]byte) []byte {
 	h.Reset()
 
 	for _, i := range input {
 		_, _ = h.Write(i)
 	}
 
-	return h.Read(int(size))
+	return h.Read(h.size)
 }
 
 // Read consumes and returns size bytes from the current hash.
 func (h *ExtendableHash) Read(size int) []byte {
-	// This might be pulled in back later
-	if size < h.Size() {
+	if size != 0 && size < h.Size() {
 		panic(errSmallOutputSize)
 	}
 
@@ -122,9 +123,31 @@ func (h *ExtendableHash) Reset() {
 	h.xof.Reset()
 }
 
+// SetOutputSize sets the output size for an ExtendableOutputFunction, and is a no-op for fixed hashing.
+func (h *ExtendableHash) SetOutputSize(size int) {
+	switch h.id {
+	case BLAKE2XB:
+		x, err := blake2b.NewXOF(uint32(size), nil)
+		if err != nil {
+			panic(err)
+		}
+
+		h.xof = x
+	case BLAKE2XS:
+		x, err := blake2s.NewXOF(uint16(size), nil)
+		if err != nil {
+			panic(err)
+		}
+
+		h.xof = x
+	}
+
+	h.size = size
+}
+
 // Size returns the number of bytes Hash will return.
 func (h *ExtendableHash) Size() int {
-	return h.id.Size()
+	return h.size
 }
 
 // BlockSize returns the hash's underlying block size.

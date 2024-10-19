@@ -29,7 +29,7 @@ const (
 
 var errHmacKeySize = errors.New("hmac key length is larger than hash output size")
 
-func newFixed(hid Hash) newHash {
+func newFixed(hid Hash, _ int) newHash {
 	var hashFunc func() hash.Hash
 
 	switch hid {
@@ -68,8 +68,8 @@ func (h *Fixed) Algorithm() Hash {
 	return h.id
 }
 
-// Hash hashes the concatenation of input and returns size bytes. The size is ignored as the output size is standard.
-func (h *Fixed) Hash(_ uint, input ...[]byte) []byte {
+// Hash hashes the concatenation of input and returns size bytes.
+func (h *Fixed) Hash(input ...[]byte) []byte {
 	h.Reset()
 
 	for _, i := range input {
@@ -100,6 +100,9 @@ func (h *Fixed) Sum(prefix []byte) []byte {
 func (h *Fixed) Reset() {
 	h.hash.Reset()
 }
+
+// SetOutputSize sets the output size for an ExtendableOutputFunction, and is a no-op for fixed hashing.
+func (h *Fixed) SetOutputSize(_ int) {}
 
 // Size returns the number of bytes Hash will return.
 func (h *Fixed) Size() int {

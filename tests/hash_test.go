@@ -117,6 +117,27 @@ func TestOutputSize(t *testing.T) {
 		if h.outputsize != h.HashID.Size() || h.outputsize != h.HashID.New().Size() {
 			t.Errorf(fmtExpectedEquality, h.HashID)
 		}
+
+		f := h.HashID.New()
+		size := f.Size()
+		// no op for fixed size
+		if h.HashType == hash.FixedOutputLength {
+			f.SetOutputSize(size + 1)
+			if f.Size() != size {
+				t.Fatal("unexpected modification of fixed sized hash output size")
+			}
+			if len(f.Hash([]byte("input"))) != size {
+				t.Fatal("unexpected modification of fixed sized hash output size")
+			}
+		} else {
+			f.SetOutputSize(size + 1)
+			if f.Size() == size {
+				t.Fatal("expected modification of fixed sized hash output size")
+			}
+			if len(f.Hash([]byte("input"))) == size {
+				t.Fatal("expected modification of fixed sized hash output size")
+			}
+		}
 	})
 }
 
@@ -160,9 +181,9 @@ func TestHash(t *testing.T) {
 
 		switch h.HashType {
 		case hash.FixedOutputLength:
-			hashed1 = hasher.Hash(0, testData.message)
+			hashed1 = hasher.Hash(testData.message)
 		case hash.ExtendableOutputFunction:
-			hashed1 = hasher.Hash(uint(hasher.Size()), testData.message)
+			hashed1 = hasher.Hash(testData.message)
 		}
 
 		hashed2 = h.HashID.Hash(testData.message)
@@ -236,6 +257,29 @@ func TestReadXOFSmallSize(t *testing.T) {
 				_ = hasher.Read(1)
 			}); !panics {
 				t.Errorf("expected panic: %v", err)
+			}
+		}
+	})
+}
+
+func TestReadXOFTooBig(t *testing.T) {
+	testAll(t, func(h *testHash) {
+		if h.HashType == hash.ExtendableOutputFunction {
+			hasher := h.HashID.New()
+
+			switch h.HashID {
+			case hash.BLAKE2XB:
+				if panics, err := expectPanic(errors.New("blake2b: XOF length too large"), func() {
+					hasher.SetOutputSize((1 << 32) - 1)
+				}); !panics {
+					t.Errorf("expected panic: %v", err)
+				}
+			case hash.BLAKE2XS:
+				if panics, err := expectPanic(errors.New("blake2s: XOF length too large"), func() {
+					hasher.SetOutputSize(65535)
+				}); !panics {
+					t.Errorf("expected panic: %v", err)
+				}
 			}
 		}
 	})
