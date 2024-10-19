@@ -23,7 +23,6 @@ linters:
     - errorlint
     #- exhaustive
     - exhaustruct
-    - exportloopref
     - fatcontext
     - forbidigo
     - forcetypeassert
@@ -165,6 +164,9 @@ linters-settings:
       - operation
       - return
       - assign
+  gosec:
+    excludes:
+      - G115
   gosimple:
     checks: [ "all" ]
   govet:
@@ -207,6 +209,8 @@ linters-settings:
       - unsafeptr
       - unusedresult
       - unusedwrite
+  interfacebloat:
+    max: 11
   lll:
     line-length: 120
     # tab width ('\t') in spaces. Default to 1.
@@ -276,4 +280,10 @@ run:
   tests: false
 
 output:
-  formats: github-actions
+  formats:
+    - format: colored-line-number
+      path: stdout
+  sort-results: true
+  sort-order:
+    - file
+  show-stats: true

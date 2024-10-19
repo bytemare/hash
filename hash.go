@@ -16,6 +16,9 @@ import (
 	"io"
 )
 
+// Hash identifies cryptographic hash functions, in the style of crypto.Hash, and adds additional methods and metadata.
+// It's immutable from its methods, but New() returns an underlying Hasher which can have its output size modified in
+// the case of an extensible-output function.
 type Hash uint8
 
 const (
@@ -54,12 +57,15 @@ const (
 	maxID Hash = maxFixed + 5
 )
 
+func available(h uint) bool {
+	return h < uint(maxID) && registeredHashes[h]
+}
+
 // FromCrypto returns a Hashing identifier given a hash function defined in the built-in crypto,
 // if it has been registered.
 func FromCrypto(h crypto.Hash) Hash {
-	i := Hash(h)
-	if i.Available() {
-		return i
+	if available(uint(h)) {
+		return Hash(h)
 	}
 
 	return 0
@@ -67,15 +73,15 @@ func FromCrypto(h crypto.Hash) Hash {
 
 // Available reports whether the given hash function is linked into the binary.
 func (h Hash) Available() bool {
-	return h < maxID && registeredHashes[h]
+	return available(uint(h))
 }
 
 // Hash returns the hash of the concatenated input.
 func (h Hash) Hash(input ...[]byte) []byte {
-	return h.New().Hash(uint(h.Size()), input...)
+	return h.New().Hash(input...)
 }
 
-// New returns the underlying Hasher function.
+// New returns the underlying Hasher.
 func (h Hash) New() Hasher {
 	return hashes[h]()
 }
@@ -126,9 +132,9 @@ type Hasher interface {
 	// Algorithm returns the Hash function identifier.
 	Algorithm() Hash
 
-	// Hash hashes the concatenation of input and returns size bytes. The size is ignored for fixed output length hashes
-	// as their output size is standard.
-	Hash(size uint, input ...[]byte) []byte
+	// Hash hashes the concatenation of input. Its length is standard for fixed hash functions, and default to 32 bytes
+	// for extensible output functions. The latter can be modified using the SetOutputSize method.
+	Hash(input ...[]byte) []byte
 
 	// Read returns size bytes from the current hash.
 	// The underlying hash state is not modified for Merkle–Damgård constructions, and size bytes will be consumed
@@ -144,6 +150,9 @@ type Hasher interface {
 
 	// Reset resets the hash to its initial state.
 	Reset()
+
+	// SetOutputSize sets the output size for an ExtendableOutputFunction, and is a no-op for fixed hashing.
+	SetOutputSize(size int)
 
 	// Size returns the number of bytes Hash will return.
 	Size() int
@@ -189,9 +198,9 @@ var (
 	securityLevels   = [maxID]int{}
 )
 
-func (h Hash) register(n func(Hash) newHash, name string, block, output, security int) {
+func (h Hash) register(n func(hid Hash, size int) newHash, name string, block, output, security int) {
 	registeredHashes[h] = true
-	hashes[h] = n(h)
+	hashes[h] = n(h, output)
 	names[h] = name
 	blockSizes[h] = block
 	outputSizes[h] = output
