@@ -79,7 +79,7 @@ func (h *Fixed) Hash(input ...[]byte) []byte {
 	return h.Sum(nil)
 }
 
-// Read returns size bytes from the current hash.
+// Read returns the current hash.
 // It does not change the underlying hash state.
 func (h *Fixed) Read(_ int) []byte {
 	return h.Sum(nil)
@@ -102,7 +102,9 @@ func (h *Fixed) Reset() {
 }
 
 // SetOutputSize sets the output size for an ExtendableOutputFunction, and is a no-op for fixed hashing.
-func (h *Fixed) SetOutputSize(_ int) {}
+func (h *Fixed) SetOutputSize(_ int) {
+	// no-op
+}
 
 // Size returns the number of bytes Hash will return.
 func (h *Fixed) Size() int {
