@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         go: [ '1.22', '1.21' ]
-    uses: bytemare/workflows/.github/workflows/test-go.yml@bc5b3be6386c117ea5347415320d799cd77c6ee6
+    uses: bytemare/workflows/.github/workflows/test-go.yml@6825c320f5ca9b249791e25be319c0f1127aa319
     with:
       command: cd .github && make test
       version: ${{ matrix.go }}
