@@ -90,7 +90,6 @@ linters:
     #- stylecheck
     - tagalign
     - tagliatelle
-    - tenv
     - testableexamples
     - testifylint
     - testpackage
@@ -101,6 +100,7 @@ linters:
     - unparam
     - unused
     - usestdlibvars
+    - usetesting
     #- varnamelen
     - wastedassign
     - whitespace
@@ -259,13 +259,17 @@ issues:
   #- "do not define dynamic errors, use wrapped static errors instead"
   #- "missing cases in switch of type Group: maxID"
 
-  #exclude-rules:
-  #  - path: internal/hash.go
-  #    linters:
-  #      - errcheck
-  #  - path: internal/tag/strings.go
-  #    linters:
-  #      - gosec
+  exclude-rules:
+    - path: extensible.go
+      linters:
+        - gci
+        - gofumpt
+        - goimports
+    - path: fixed.go
+      linters:
+        - gci
+        - gofumpt
+        - goimports
 
   max-issues-per-linter: 0
   max-same-issues: 0

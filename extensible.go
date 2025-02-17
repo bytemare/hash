@@ -12,9 +12,9 @@ import (
 	"errors"
 	"io"
 
+	"crypto/sha3"
 	"golang.org/x/crypto/blake2b"
 	"golang.org/x/crypto/blake2s"
-	"golang.org/x/crypto/sha3"
 )
 
 const (
@@ -25,8 +25,8 @@ const (
 	blake2xs = "BLAKE2XS"
 
 	// block size in bytes.
-	blockSHAKE128 = 1344 / 8
-	blockSHAKE256 = 1088 / 8
+	blockSHAKE128 = (1600 - 256) / 8
+	blockSHAKE256 = (1600 - 512) / 8
 )
 
 var errSmallOutputSize = errors.New("requested output size too small")
@@ -55,9 +55,9 @@ func newXOF(hid Hash, size int) newHash {
 
 		switch hid {
 		case SHAKE128:
-			ext.xof = sha3.NewShake128()
+			ext.xof = sha3.NewSHAKE128()
 		case SHAKE256:
-			ext.xof = sha3.NewShake256()
+			ext.xof = sha3.NewSHAKE256()
 		case BLAKE2XB:
 			ext.xof, _ = blake2b.NewXOF(uint32(size), nil)
 		case BLAKE2XS:
