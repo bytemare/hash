@@ -14,10 +14,9 @@ import (
 	"crypto/sha512"
 	"errors"
 	"hash"
-	"io"
 
-	"golang.org/x/crypto/hkdf"
-	"golang.org/x/crypto/sha3"
+	"crypto/hkdf"
+	"crypto/sha3"
 )
 
 const (
@@ -40,11 +39,17 @@ func newFixed(hid Hash, _ int) newHash {
 	case SHA512:
 		hashFunc = sha512.New
 	case SHA3_256:
-		hashFunc = sha3.New256
+		hashFunc = func() hash.Hash {
+			return sha3.New256()
+		}
 	case SHA3_384:
-		hashFunc = sha3.New384
+		hashFunc = func() hash.Hash {
+			return sha3.New384()
+		}
 	case SHA3_512:
-		hashFunc = sha3.New512
+		hashFunc = func() hash.Hash {
+			return sha3.New512()
+		}
 	}
 
 	return func() Hasher {
@@ -145,18 +150,17 @@ func (h *Fixed) HKDF(secret, salt, info []byte, length int) []byte {
 		length = h.id.Size()
 	}
 
-	kdf := hkdf.New(h.f, secret, salt, info)
-	dst := make([]byte, length)
+	out, _ := hkdf.Key(h.f, secret, salt, string(info), length)
 
-	_, _ = io.ReadFull(kdf, dst)
-
-	return dst
+	return out
 }
 
 // HKDFExtract is an "extract" only HKDF, where the secret and salt are used to generate a pseudorandom key. This key
 // can then be used in multiple HKDFExpand calls to derive individual different keys.
 func (h *Fixed) HKDFExtract(secret, salt []byte) []byte {
-	return hkdf.Extract(h.f, secret, salt)
+	out, _ := hkdf.Extract(h.f, secret, salt)
+
+	return out
 }
 
 // HKDFExpand is an "expand" only HKDF, where the key should be an already random/hashed input,
@@ -166,10 +170,7 @@ func (h *Fixed) HKDFExpand(pseudorandomKey, info []byte, length int) []byte {
 		length = h.id.Size()
 	}
 
-	kdf := hkdf.Expand(h.f, pseudorandomKey, info)
-	dst := make([]byte, length)
+	out, _ := hkdf.Expand(h.f, pseudorandomKey, string(info), length)
 
-	_, _ = kdf.Read(dst)
-
-	return dst
+	return out
 }
