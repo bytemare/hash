@@ -13,6 +13,7 @@ import (
 	"crypto/sha256"
 	"crypto/sha512"
 	"errors"
+	"fmt"
 	"hash"
 
 	"crypto/hkdf"
@@ -92,7 +93,12 @@ func (h *Fixed) Read(_ int) []byte {
 
 // Write implements io.Writer.
 func (h *Fixed) Write(input []byte) (int, error) {
-	return h.hash.Write(input)
+	n, err := h.hash.Write(input)
+	if err != nil {
+		return n, fmt.Errorf("failed to write to hash: %w", err)
+	}
+
+	return n, nil
 }
 
 // Sum appends the current hash to b and returns the resulting slice.

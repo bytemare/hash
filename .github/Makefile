@@ -21,7 +21,7 @@ fmt:
 	@go fmt ../...
 	@golines -m 120 -t 4 -w ../
 	@gofumpt -w -extra ../
-	@gci write -s Standard -s Default -s "Prefix($(shell go list -m))" ../
+	@gci write -s standard -s default -s "Prefix($(shell go list -m))" -s blank -s dot -s alias --skip-generated ../
 	@fieldalignment -fix ../...
 
 .PHONY: license
