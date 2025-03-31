@@ -17,8 +17,10 @@ linters:
       excludes:
         - G115
     govet:
-      shadow: true
       enable-all: true
+      settings:
+        shadow:
+          strict: true
     interfacebloat:
       max: 11
     mnd:
