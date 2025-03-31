@@ -13,7 +13,6 @@ import (
 	"crypto/sha256"
 	"crypto/sha512"
 	"errors"
-	"fmt"
 	"hash"
 
 	"crypto/hkdf"
@@ -93,11 +92,7 @@ func (h *Fixed) Read(_ int) []byte {
 
 // Write implements io.Writer.
 func (h *Fixed) Write(input []byte) (int, error) {
-	n, err := h.hash.Write(input)
-	if err != nil {
-		return n, fmt.Errorf("failed to write to hash: %w", err)
-	}
-
+	n, _ := h.hash.Write(input)
 	return n, nil
 }
 

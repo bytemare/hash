@@ -33,6 +33,8 @@ linters:
         - '256'
         - '512'
         - '1600'
+    nlreturn:
+      block-size: 2
     prealloc:
       simple: false
       for-loops: true

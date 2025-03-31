@@ -10,7 +10,6 @@ package hash
 
 import (
 	"errors"
-	"fmt"
 	"io"
 
 	"crypto/sha3"
@@ -107,11 +106,7 @@ func (h *ExtendableHash) Read(size int) []byte {
 
 // Write implements io.Writer.
 func (h *ExtendableHash) Write(input []byte) (int, error) {
-	n, err := h.xof.Write(input)
-	if err != nil {
-		return n, fmt.Errorf("failed to write to hash: %w", err)
-	}
-
+	n, _ := h.xof.Write(input)
 	return n, nil
 }
 
