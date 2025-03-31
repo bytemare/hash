@@ -40,9 +40,9 @@ linters:
         - return
         - assign
       ignored-numbers:
-        - 256
-        - 512
-        - 1600
+        - '256'
+        - '512'
+        - '1600'
     prealloc:
       simple: false
       for-loops: true
