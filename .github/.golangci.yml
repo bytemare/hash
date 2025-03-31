@@ -11,18 +11,8 @@ linters:
     errcheck:
       check-type-assertions: true
       check-blank: true
-    gci:
-      sections:
-        - standard
-        - default
-        - prefix(github.com/bytemare/hash)
-        - blank
-        - dot
-        - alias
     gocritic:
       enable-all: true
-    goimports:
-      local-prefixes: github.com/bytemare/hash
     gosec:
       excludes:
         - G115
