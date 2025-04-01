@@ -92,7 +92,8 @@ func (h *Fixed) Read(_ int) []byte {
 
 // Write implements io.Writer.
 func (h *Fixed) Write(input []byte) (int, error) {
-	return h.hash.Write(input)
+	n, _ := h.hash.Write(input)
+	return n, nil
 }
 
 // Sum appends the current hash to b and returns the resulting slice.

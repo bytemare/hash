@@ -106,7 +106,8 @@ func (h *ExtendableHash) Read(size int) []byte {
 
 // Write implements io.Writer.
 func (h *ExtendableHash) Write(input []byte) (int, error) {
-	return h.xof.Write(input)
+	n, _ := h.xof.Write(input)
+	return n, nil
 }
 
 // Sum appends the current hash to b and returns the resulting slice.

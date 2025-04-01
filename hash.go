@@ -128,6 +128,7 @@ func (h Hash) GetXOF() *ExtendableHash {
 	return h.New().GetXOF()
 }
 
+// A Hasher implements a Hash algorithm and additionally provides metadata on its type and structure.
 type Hasher interface {
 	// Algorithm returns the Hash function identifier.
 	Algorithm() Hash
