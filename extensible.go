@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 //
-// Copyright (C) 2024 Daniel Bourdrez. All Rights Reserved.
+// Copyright (C) 2025 Daniel Bourdrez. All Rights Reserved.
 //
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree or at
@@ -9,10 +9,10 @@
 package hash
 
 import (
+	"crypto/sha3"
 	"errors"
 	"io"
 
-	"crypto/sha3"
 	"golang.org/x/crypto/blake2b"
 	"golang.org/x/crypto/blake2s"
 )
@@ -86,7 +86,7 @@ func (h *ExtendableHash) Hash(input ...[]byte) []byte {
 	h.Reset()
 
 	for _, i := range input {
-		_, _ = h.Write(i)
+		_, _ = h.Write(i) // never fails.
 	}
 
 	return h.Read(h.size)
@@ -99,14 +99,14 @@ func (h *ExtendableHash) Read(size int) []byte {
 	}
 
 	output := make([]byte, size)
-	_, _ = h.xof.Read(output)
+	_, _ = h.xof.Read(output) // never fails.
 
 	return output
 }
 
 // Write implements io.Writer.
 func (h *ExtendableHash) Write(input []byte) (int, error) {
-	n, _ := h.xof.Write(input)
+	n, _ := h.xof.Write(input) // never fails.
 	return n, nil
 }
 
@@ -114,7 +114,7 @@ func (h *ExtendableHash) Write(input []byte) (int, error) {
 func (h *ExtendableHash) Sum(prefix []byte) []byte {
 	output := make([]byte, h.id.Size()+len(prefix))
 	copy(output, prefix)
-	_, _ = h.xof.Read(output[len(prefix):])
+	_, _ = h.xof.Read(output[len(prefix):]) // never fails.
 
 	return output
 }

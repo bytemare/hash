@@ -1,3 +1,13 @@
+#
+# SPDX-License-Identifier: MIT
+#
+# Copyright (C) 2025 Daniel Bourdrez. All Rights Reserved.
+#
+# This source code is licensed under the MIT license found in the
+# LICENSE file in the root directory of this source tree or at
+# https://spdx.org/licenses/MIT.html
+#
+
 name: Run Tests
 
 on:
@@ -15,7 +25,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        go: [ '1.24' ]
-    uses: bytemare/workflows/.github/workflows/test-go.yaml@10acaec9311457cf71789a956e110ac175297fb1
+        go: [ '1.25', '1.24', '1.23' ]
+    uses: bytemare/workflows/.github/workflows/test-go.yaml@f8224ea3e88d33e9dd6930218f726591e1700bac
     with:
       version: ${{ matrix.go }}
