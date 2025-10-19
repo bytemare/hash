@@ -26,6 +26,6 @@ jobs:
       fail-fast: false
       matrix:
         go: [ '1.25', '1.24', '1.23' ]
-    uses: bytemare/workflows/.github/workflows/test-go.yaml@f8224ea3e88d33e9dd6930218f726591e1700bac
+    uses: bytemare/workflows/.github/workflows/test-go.yaml@67d6438b298f7edee4c7937cea51dfdcef0aef86
     with:
       version: ${{ matrix.go }}
