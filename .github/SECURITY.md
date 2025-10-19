@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-Only the latest minor release of each supported major version receives security fixes. Consumers should stay current with tagged releases. Patch-level updates are fast-forward compatible unless otherwise documented in the [CHANGELOG](CHANGELOG.md).
+Only the latest minor release of each supported major version receives security fixes. Consumers should stay current with tagged releases. Patch-level updates are fast-forward compatible unless otherwise documented in the [CHANGELOG](../CHANGELOG.md).
 
 ## Reporting a Vulnerability
 
@@ -10,7 +10,7 @@ Please report suspected vulnerabilities **privately** via GitHub Security Adviso
 
 - https://github.com/bytemare/hash/security/advisories
 
-Using the advisory workflow ensures that the report is shared only with the maintainers. Do **not** open a public issue for security reports.
+Using the advisory workflow ensures that the report is shared only with the maintainers. Do **not** open a public issue for security reports. 
 
 ## Disclosure Process
 

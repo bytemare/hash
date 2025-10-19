@@ -1,38 +1,77 @@
-# Cryptographic Hash Functions
-[![hash](https://github.com/bytemare/hash/actions/workflows/wf-analysis.yaml/badge.svg)](https://github.com/bytemare/hash/actions/workflows/wf-analysis.yaml)
+# github.com/bytemare/hash
+
+[![CI](https://github.com/bytemare/hash/actions/workflows/wf-tests.yaml/badge.svg)](https://github.com/bytemare/hash/actions/workflows/wf-tests.yaml)
+[![Analysis](https://github.com/bytemare/hash/actions/workflows/wf-analysis.yaml/badge.svg)](https://github.com/bytemare/hash/actions/workflows/wf-analysis.yaml)
 [![Go Reference](https://pkg.go.dev/badge/github.com/bytemare/hash.svg)](https://pkg.go.dev/github.com/bytemare/hash)
-[![codecov](https://codecov.io/gh/bytemare/hash/branch/main/graph/badge.svg?token=5bQfB0OctA)](https://codecov.io/gh/bytemare/hash)
-[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/8781/badge)](https://www.bestpractices.dev/projects/8781)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/bytemare/hash/badge)](https://securityscorecards.dev/viewer/?uri=github.com/bytemare/hash)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
+High-level Go wrappers for standard hash functions, unifying set of common cryptographic hash operations behind a single API, allowing callers to switch between algorithms with minimal code changes while relying on well-maintained and secure backends.
+It unifies Merkle–Damgård and extendable-output functions behind a single API, providing HMAC and HKDF helpers along with consistent metadata (block sizes, security strength, availability). Hashers are immutable handles that produce fresh state,
+preventing cross-call contamination and enforcing sane defaults for sizes.
+
+## Import
 
 ```
-  import "github.com/bytemare/hash"
+import "github.com/bytemare/hash"
 ```
 
-This package exposes a simple API to seamlessly use a variety of cryptographic functions. It aims at minimum code
-adaptation in your code, and easy parameterization. It completely relies on built-ins.
+## Quick Start
 
-It attempts to offer a single API for fixed and extensible-output functions,
-Merkle–Damgård construction (e.g. SHA-1, SHA-2), sponge functions (e.g. SHA-3, SHAKE), and HAIFA structures (e.g. Blake2).
+- Quickly hash data:
 
-- Implements the hash.Hash interface
-- HMAC and HKDF for fixed output size hash functions
-- useful metadata like block size, security, and output size when relevant.
+```go
+message := []byte("message")
 
-## Documentation [![Go Reference](https://pkg.go.dev/badge/github.com/bytemare/hash.svg)](https://pkg.go.dev/github.com/bytemare/hash)
+output := hash.SHA256.Hash(message)
+```
 
-You can find the documentation and usage examples in [the package doc](https://pkg.go.dev/github.com/bytemare/hash) and [the project wiki](https://github.com/bytemare/hash/wiki) .
+- HMAC
 
-## Versioning
+```go
+message := []byte("message")
+key := []byte("key")
 
-[SemVer](http://semver.org) is used for versioning. For the versions available, see the [tags on the repository](https://github.com/bytemare/hash/tags).
+hmac := hash.SHA256.GetHashFunction().Hmac(message, key)
+```
 
+- If you have an identifier from the crypto package, it's easy:
+```go
+id := crypto.SHA256
+message := []byte("message")
 
-## Contributing
+output := hash.FromCrypto(id).Hash(message)
+```
 
-Please read [CONTRIBUTING.md](.github/CONTRIBUTING.md) for details on the code of conduct, and the process for submitting pull requests.
+See [`examples_test.go`](examples_test.go) for additional HMAC, HKDF extract/expand, and metadata usage patterns.
+
+## API
+
+- `hash.Hash` enumerates supported algorithms and exposes metadata helpers (`Hash.Available`, `Hash.Type`, etc.) that route calls to registered constructors (`hash.go:24`, `hash.go:85`).
+- `Fixed` wraps Merkle–Damgård style hashes and adds HMAC/HKDF utilities that stay within Go's approved primitives (`fixed.go:64`, `fixed.go:135`).
+- `ExtendableHash` provides SHAKE/BLAKE2X streaming support with configurable output sizes (`extensible.go:71`, `extensible.go:127`).
+
+When no lengths are provided, the standard lengths are used.
+
+**Panics occur in the following scenarios, to indicate the caller doesn't adhere to secure usage patterns:**
+- requested output lengths for XOFs it too short (avoid truncation of security guarantees)
+- Supplying HMAC keys longer than the output length (clip or hash your keys first if they overflow)
+
+These panics must be considered as bugs from the caller, wrap them if this is unacceptable.
+
+## Addressing Common Weaknesses
+
+| Weakness                                                      | Implemented countermeasures                                                                                                      |
+|---------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| Improper key length enforcement (CWE-325)                     | HMAC helper panics on oversized keys and tests ensure panic occurs (`fixed.go:135`, `tests/fixed_test.go:33`).                   |
+| Insufficient output length for cryptographic hashes (CWE-326) | Extendable hash `Read` verifies requested size to prevent truncated outputs (`extensible.go:95`).                                |
+| Exceeding HKDF block limits (CWE-331)                         | HKDF methods propagate upstream errors and tests enforce failure on excessive length (`fixed.go:147`, `tests/fixed_test.go:64`). |
+| Unregistered algorithm usage (CWE-693)                        | Registry gate ensures only compiled algorithms are exposed, preventing accidental downgrade to weaker hashes (`hash.go:60`).     |
+
+## Versioning and Compatibility
+
+The module follows [Semantic Versioning](https://semver.org/) for its public API. New hashes or helper APIs as well as breaking changes ship in minor releases.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Released under the [MIT License](LICENSE). See `LICENSE` for full terms.

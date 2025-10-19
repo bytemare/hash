@@ -1,36 +1,31 @@
 # Project Overview
 
-`github.com/bytemare/ecc` provides high-level abstractions for working with multiple elliptic curve groups in Go. It exposes common scalar, element, and hash-to-curve operations through a unified interface while delegating curve-specific logic to optimized backends.
+`github.com/bytemare/hash` provides high-level abstractions for working with multiple hashing functions in Go. It unifies a set of common cryptographic hash operations behind a single API, allowing callers to switch between algorithms with minimal code changes while relying on well-maintained and secure backends.
 
 ## Goals
 
 - Offer a single package that can switch between supported groups with minimal call-site changes.
 - Provide consistent error handling and encoding semantics across backends.
-- Adhere to RFC 9380 ciphersuite definitions and domain separation rules.
-- Keep dependencies limited to well-maintained cryptographic libraries.
+- Keep dependencies limited to built-in cryptographic libraries.
 
 ## Module Layout
 
-- `element.go`, `scalar.go`, `groups.go`: Public API and wrapper types that embed backend implementations.
-- `internal/`: Curve-specific implementations grouped by backend (`nist`, `ristretto`, `edwards25519`, `secp256k1`). The internal layer satisfies the shared interfaces for elements, scalars, and groups.
-- `debug/`: Helpers used in tests for generating malformed inputs.
-- `tests/`: Compatibility, encoding, and fuzz tests covering shared behaviors.
+- `hash.go` contains the public `Hash` enumeration, registration tables, and helper metadata methods exposed by the
+  package (`Hash.Available`, `Hash.New`, `Hash.SecurityLevel`).
+- `fixed.go` implements the `Fixed` hasher wrapper with HMAC and HKDF helpers for Merkle–Damgård algorithms, built on
+  Go's `crypto` package primitives.
+- `extensible.go` defines the `ExtendableHash` implementation for SHAKE and BLAKE2X extendable-output functions backed
+  by `crypto/sha3` and `golang.org/x/crypto`.
+- `tests/` exercises both variants (functional, fuzz, HKDF edge cases) ensuring metadata and panic pathways behave as
+  documented, while `examples_test.go` provides runnable snippets for the README and GoDoc.
 
 ## Supported Go Versions
 
-The module is developed using the current stable release, and CI verifies compatibility with the latest 3 stables versions. While other versions may work, they are not part of regular validation.
+- `go.mod` targets the latest available Go version, which is the primary development toolchain.
+- GitHub Actions run tests against the three latest Go version (`.github/workflows/wf-tests.yaml`).
+- Older toolchains may compile, but they are outside the support window and receive no compatibility guarantees.
 
 ## Compatibility Policy
 
 - Semantic Versioning governs API stability. Breaking changes require a minor version bump.
-- Hash-to-curve implementations follow the latest published RFCs. Updates may occur to track specification changes but will be highlighted in the release changelog.
 - Upstream breaking changes in backends are introduced only after evaluation and version pinning.
-
-## Policies
-
-- [Contribution workflow](../.github/CONTRIBUTING.md)
-- [Developer Certificate of Origin](../.github/CONTRIBUTING.md#4-commit-standards)
-- [Code of Conduct](../.github/CODE_OF_CONDUCT.md)
-- [Security assurance case](secure_design.md)
-- [Governance](governance)
-- [License](../LICENSE)

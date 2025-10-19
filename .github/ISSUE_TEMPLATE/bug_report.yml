@@ -19,10 +19,10 @@ body:
     id: environment
     attributes:
       label: Environment
-      description: Go version, OS/architecture, ecc version or commit.
+      description: Go version, OS/architecture, hash module version or commit.
       placeholder: |
         - Go: 1.25.1
-        - ecc: v0.10.0
+        - hash: v0.1.0
         - OS: linux/amd64
     validations:
       required: true
