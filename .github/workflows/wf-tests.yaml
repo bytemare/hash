@@ -8,6 +8,8 @@
 # https://spdx.org/licenses/MIT.html
 #
 
+---
+
 name: Run Tests
 
 on:
@@ -18,14 +20,14 @@ on:
     branches:
       - main
 
-permissions: {}
+permissions: { }
 
 jobs:
   Test:
     strategy:
       fail-fast: false
       matrix:
-        go: [ '1.25', '1.24', '1.23' ]
-    uses: bytemare/workflows/.github/workflows/test-go.yaml@67d6438b298f7edee4c7937cea51dfdcef0aef86
+        go: ['1.25', '1.24', '1.23']
+    uses: bytemare/workflows/.github/workflows/test-go.yaml@8abce840140ebad3f8b6f16fb4cc8838e64a476a
     with:
       version: ${{ matrix.go }}

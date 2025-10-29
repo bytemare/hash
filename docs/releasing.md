@@ -9,10 +9,11 @@ Releases are cut from tags on the `main` branch and automated workflows.
 - A tag is released on main
   - ```git tag -s vX.Y.Z```
   - ```git push origin vX.Y.Z```
-- Automation publishes artifacts
-  - Pushing the tag triggers `.github/workflows/wf-release.yaml`.
-  - SLSA: The workflow builds a source archive, generates a CycloneDX SBOM, records checksums, uploads an SBOM attestation and provenance `.intoto.jsonl` assets.
-- If the automated release does not include human-readable notes, edit the GitHub release, paste the changelog notes, and save.
+
+[- Automation publishes artifacts]: #
+[- Pushing the tag triggers `.github/workflows/wf-release.yaml`.]: #
+[- SLSA: The workflow builds a source archive, generates a CycloneDX SBOM, records checksums, uploads an SBOM attestation and provenance `.intoto.jsonl` assets.]: #
+[- If the automated release does not include human-readable notes, edit the GitHub release, paste the changelog notes, and save.]: #
 
 ## Emergency Releases
 
