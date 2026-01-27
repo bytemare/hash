@@ -39,10 +39,30 @@ output := hash.FromCrypto(id).Hash(message)
 
 See [`examples_test.go`](examples_test.go) for additional HMAC, HKDF extract/expand, and metadata usage patterns.
 
-## Versioning and Compatibility
+## Versioning
 
-The module follows [Semantic Versioning](https://semver.org/) for its public API. New hashes or helper APIs as well as breaking changes ship in minor releases.
+[SemVer](https://semver.org) is used for versioning. For the versions
+available, see the [tags on the repository](https://github.com/bytemare/opaque/tags).
+
+## Release Integrity (SLSA Level 3)
+Releases are built with the reusable [bytemare/slsa](https://github.com/bytemare/slsa) workflow and ship the evidence required for SLSA Level 3 compliance:
+
+- 📦 Artifacts are uploaded to the release page, and include the deterministic source archive plus subjects.sha256, signed SBOM (sbom.cdx.json), GitHub provenance (*.intoto.jsonl), a reproducibility report (verification.json), and a signed Verification Summary Attestation (verification-summary.attestation.json[.bundle]).
+- ✍️ All artifacts are signed using [Sigstore](https://sigstore.dev) with transparency via [Rekor](https://rekor.sigstore.dev).
+- ✅ Verification (or see the latest docs at [bytemare/slsa](https://github.com/bytemare/slsa)):
+```shell
+curl -sSL https://raw.githubusercontent.com/bytemare/slsa/main/verify-release.sh -o verify-release.sh
+chmod +x verify-release.sh
+./verify-release.sh --repo <owner>/<repo> --tag <tag> --mode full --signer-repo bytemare/slsa
+```
+Run again with `--mode reproduce` to build in a container, or `--mode vsa` to validate just the verification summary.
+
+## Contributing
+
+Please read [CONTRIBUTING.md](.github/CONTRIBUTING.md) for details on the code
+of conduct, and the process for submitting pull requests.
 
 ## License
 
-Released under the [MIT License](LICENSE). See `LICENSE` for full terms.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE)
+file for details.
