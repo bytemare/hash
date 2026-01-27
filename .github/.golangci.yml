@@ -144,7 +144,6 @@ linters:
         - return
         - assign
       ignored-numbers:
-        - '8'
         - '256'
         - '512'
         - '1600'
