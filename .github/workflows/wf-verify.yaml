@@ -35,7 +35,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    uses: bytemare/slsa/.github/workflows/verify.yaml@6b6b2069083d1ce7d0b2b61636f5bf6c784b5b43
+    uses: bytemare/slsa/.github/workflows/verify.yaml@0b63793efcde9767f5e6bed5a025c1287df819f9
     with:
       repo: ${{ github.repository }}
       tag: ${{ github.event.inputs.tag }}
@@ -47,7 +47,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    uses: bytemare/slsa/.github/workflows/verify.yaml@6b6b2069083d1ce7d0b2b61636f5bf6c784b5b43
+    uses: bytemare/slsa/.github/workflows/verify.yaml@0b63793efcde9767f5e6bed5a025c1287df819f9
     with:
       repo: ${{ github.repository }}
       tag: ${{ github.event.inputs.tag }}
@@ -61,7 +61,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    uses: bytemare/slsa/.github/workflows/verify.yaml@6b6b2069083d1ce7d0b2b61636f5bf6c784b5b43
+    uses: bytemare/slsa/.github/workflows/verify.yaml@0b63793efcde9767f5e6bed5a025c1287df819f9
     with:
       repo: ${{ github.repository }}
       tag: ${{ github.event.inputs.tag }}
@@ -73,7 +73,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    uses: bytemare/slsa/.github/workflows/verify.yaml@6b6b2069083d1ce7d0b2b61636f5bf6c784b5b43
+    uses: bytemare/slsa/.github/workflows/verify.yaml@0b63793efcde9767f5e6bed5a025c1287df819f9
     with:
       repo: ${{ github.repository }}
       tag: ${{ github.event.inputs.tag }}
