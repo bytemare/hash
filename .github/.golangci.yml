@@ -152,6 +152,13 @@ linters:
     prealloc:
       simple: false
       for-loops: true
+    revive:
+      rules:
+        - name: var-naming
+          arguments:
+            - [ "" ] # AllowList
+            - [ "" ] # DenyList
+            - - skip-package-name-collision-with-go-std: true
   exclusions:
     rules:
       - path: extensible.go

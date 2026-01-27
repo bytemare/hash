@@ -6,7 +6,7 @@ preventing cross-call contamination and enforcing sane defaults for sizes.
 
 ## Import
 
-```
+```go
 import "github.com/bytemare/hash"
 ```
 
