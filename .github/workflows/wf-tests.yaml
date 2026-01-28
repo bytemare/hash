@@ -51,8 +51,4 @@ jobs:
           go-version: ${{ inputs.version }}
 
       - name: Run Gremlins
-        uses: go-gremlins/gremlins-action@v1
-        with:
-          version: latest
-          args: --tags="tag1,tag2"
-          workdir: test/dir
+        uses: go-gremlins/gremlins-action@ee6fde8d2f60c9f9a295fd0175937514ba3be695
