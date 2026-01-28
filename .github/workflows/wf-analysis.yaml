@@ -62,7 +62,7 @@ jobs:
       ort_config_repository: "https://github.com/oss-review-toolkit/ort-config"
       ort_config_revision: "34c5d317e44e86505d0d257f2c1076deda35d9df"     # optional pin for deterministic policy
       ort_fail_on: "violations"   # fail mode: violations|issues|never
-      ort_cli_args: "-P ort.analyzer.enabledPackageManagers=GoMod -l org=bytemare -l dist=oss"
+      ort_cli_args: "-P ort.analyzer.enabledPackageManagers=GoMod"
 
   Governance:
     uses: bytemare/workflows/.github/workflows/governance.yaml@d5a06bc8d9820c7b603cfcd3b69821f84eedd23c
