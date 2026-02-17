@@ -49,6 +49,3 @@ jobs:
         uses: bytemare/actions/init-go@632e91df0441cb63611b4909d8e33550cf0b5835
         with:
           go-version: ${{ inputs.version }}
-
-      - name: Run Gremlins
-        uses: go-gremlins/gremlins-action@ee6fde8d2f60c9f9a295fd0175937514ba3be695

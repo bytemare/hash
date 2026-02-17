@@ -6,7 +6,7 @@ This document explains how the `github.com/bytemare/hash` project is stewarded, 
 
 - **Maintainer** – Owns the technical direction, reviews and merges pull requests, and cuts releases. The canonical maintainer is Daniel Bourdrez ([@bytemare](https://github.com/bytemare)), as recorded in `LICENSE` and `.github/CODEOWNERS`.
 - **Contributor** – Anyone submitting issues, documentation, or code changes through the standard contribution process.
-- **Reviewer** – Maintainers may delegate review responsibilities to trusted contributors for specific areas (e.g., backends, tooling).
+- **Reviewer** – Maintainers may delegate review responsibilities to trusted contributors for specific areas (e.g., curve backends, tooling).
 
 ## Decision-Making
 
@@ -27,7 +27,7 @@ Potential maintainers are nominated via a governance issue outlining evidence. E
 ## Maintainer Offboarding
 
 - Maintainers may step down voluntarily via an issue documenting the transition and handing off outstanding responsibilities.
-- Inactivity for a longer period of time without notice triggers a check-in. The maintainer may be moved to emeritus status to keep ownership current.
+- Inactivity for more than three months without notice triggers a check-in. After six months, the maintainer may be moved to emeritus status to keep ownership current.
 
 ## Conflict Resolution
 
