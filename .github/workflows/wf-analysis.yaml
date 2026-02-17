@@ -33,6 +33,8 @@ jobs:
       packages: read
       statuses: write
     with:
+      # gofmt
+      gofmt: true
       # Super-Linter
       super-linter: true
       super-linter-validate-all-codebase: true
@@ -81,6 +83,7 @@ jobs:
       ort_config_source: ".github/ort" # optional: additional repo specific configuration directory to use. If you have an .ort.yml config file put it there.
       ort_config_target: "~/.ort/config" # optional: target directory to stage the policy configuration to, defaults to ~/.ort/config, because that's where ORT looks for it
       ort_fail_on: "violations"   # fail mode: violations|issues|never
+      ort_cli_args: "-P ort.analyzer.enabledPackageManagers=GoMod"
     secrets:
       # OpenSSF Scorecard token
       scorecard: ${{ secrets.SCORECARD_TOKEN }}
@@ -96,8 +99,27 @@ jobs:
       do-not-submit: true
       # Semgrep
       semgrep: true
+      # CodeQL
+      codeql: true
+      codeql-language: go # comma-separated list supported
+      # SonarQube
+      sonarqube: true
+      sonarqube-configuration: .github/sonar-project.properties
+      sonarqube-coverage: true
+      sonarqube-coverage-command: "make -C .github cover"
+      sonarqube-setup-go: true
+      # Govulncheck
+      govulncheck: true
       # Gitleaks
       gitleaks: true
+      # Codecov upload
+      codecov: true
+      codecov-coverage-command: "make -C .github cover"
+      codecov-setup-go: true
     secrets:
       # Semgrep token
       semgrep: ${{ secrets.SEMGREP_APP_TOKEN }}
+      # SonarQube token
+      sonarqube: ${{ secrets.SONAR_TOKEN }}
+      # Codecov token
+      codecov: ${{ secrets.CODECOV_TOKEN }}
