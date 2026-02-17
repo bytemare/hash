@@ -30,10 +30,10 @@ Thanks for investing time in improving this module! Pair this workflow guide wit
 ## 5. Quality Checks
 
 1. Run the paved commands before pushing:
-   ```bash
-   make -C .github lint vulncheck test cover fuzz
-   ```
-   These targets mirror the CI tests (golangci-lint, `go test`, fuzzing, `govulncheck`, etc.).
+  ```bash
+  make -C .github lint vulncheck test cover fuzz
+  ```
+  These targets mirror the CI tests (golangci-lint, `go test`, fuzzing, `govulncheck`, etc.).
 2. Ensure `go mod tidy` produces no diff and that coverage does not regress meaningfully. If coverage drops, explain why in the pull request.
 3. Update documentation when behaviour or APIs change. Architecture or security changes should be reflected in the relevant `docs/` files.
 4. **For user-facing changes**, add an entry to [CHANGELOG.md](../CHANGELOG.md) under `[Unreleased]` describing what changed.

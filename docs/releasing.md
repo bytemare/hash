@@ -5,35 +5,35 @@ This project publishes Go modules following Semantic Versioning. Releases are co
 ## Release Checklist
 
 1. **Plan the version**
-   - Determine the next SemVer tag (`vMAJOR.MINOR.PATCH`).
-   - Open or update an issue/PR describing notable changes.
+  - Determine the next SemVer tag (`vMAJOR.MINOR.PATCH`).
+  - Open or update an issue/PR describing notable changes.
 
 2. **Update documentation**
-   - Add release notes to [CHANGELOG.md](../CHANGELOG.md) under a new version heading.
-   - Move entries from `[Unreleased]` to the new version section.
-   - Verify README snippets and policy docs still apply.
+  - Add release notes to [CHANGELOG.md](../CHANGELOG.md) under a new version heading.
+  - Move entries from `[Unreleased]` to the new version section.
+  - Verify README snippets and policy docs still apply.
 
 3. **Run validation locally**
 
-   Run the validation suite as described in [CONTRIBUTING.md §5](../.github/CONTRIBUTING.md#5-quality-checks).
+  Run the validation suite as described in [CONTRIBUTING.md §5](../.github/CONTRIBUTING.md#5-quality-checks).
 
 4. **Tag and publish a new release**
-   ```bash
-   make -C .github release tag=vX.Y.Z
-   ```
+  ```bash
+  make -C .github release tag=vX.Y.Z
+  ```
 
 5. **Let automation publish artifacts**
-   - Pushing the tag triggers `.github/workflows/wf-release.yaml`.
-   - The workflow builds a source archive, generates a CycloneDX SBOM, records checksums, and uploads an SBOM attestation.
-   - A reusable SLSA provenance job attaches the provenance bundle to the release.
-   - Monitor the workflow run for success. Confirm that the release contains the tarball, SBOM, and provenance `.intoto.jsonl` assets.
+  - Pushing the tag triggers `.github/workflows/wf-release.yaml`.
+  - The workflow builds a source archive, generates a CycloneDX SBOM, records checksums, and uploads an SBOM attestation.
+  - A reusable SLSA provenance job attaches the provenance bundle to the release.
+  - Monitor the workflow run for success. Confirm that the release contains the tarball, SBOM, and provenance `.intoto.jsonl` assets.
 
 6. **Publish notes**
-   - If the automated release does not include human-readable notes, edit the GitHub release, paste the `CHANGELOG.md` entry, and save.
+  - If the automated release does not include human-readable notes, edit the GitHub release, paste the `CHANGELOG.md` entry, and save.
 
 7. **Post-release follow-up**
-   - Announce the release in the relevant issue or discussion.
-   - Triage any downstream reports and start planning the next iteration.
+  - Announce the release in the relevant issue or discussion.
+  - Triage any downstream reports and start planning the next iteration.
 
 ## Emergency Releases
 
