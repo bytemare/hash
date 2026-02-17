@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-Only the latest minor release of each supported major version receives security fixes. Consumers should stay current with tagged releases. Patch-level updates are fast-forward compatible unless otherwise documented in the [CHANGELOG](CHANGELOG.md).
+Only the latest minor release of each supported major version receives security fixes. Consumers should stay current with tagged releases. Patch-level updates are fast-forward compatible unless otherwise documented in the [CHANGELOG](../CHANGELOG.md).
 
 ## Reporting a Vulnerability
 

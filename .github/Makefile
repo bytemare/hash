@@ -60,66 +60,66 @@ cover:
 fuzz:
 	@echo "Running fuzz tests ..."
 	@fuzzTime=$${FUZZTIME:-10s}; \
-	 repo_root=$$(cd .. && pwd); \
-	 gocache_dir="$$repo_root/.gocache"; \
-	 gomodcache_dir=$$(go env GOMODCACHE); \
-	 mkdir -p "$$gocache_dir"; \
-	 cd "$$repo_root"; \
-	 fuzz_targets=$$(GOCACHE="$$gocache_dir" GOMODCACHE="$$gomodcache_dir" go test ./tests -list '^Fuzz' | grep '^Fuzz'); \
-	 num_targets=$$(echo "$$fuzz_targets" | wc -l | tr -d ' '); \
-	 fuzz_seconds=$$(echo "$$fuzzTime" | sed 's/s$$//; s/m$$/*60/; s/h$$/*3600/' | bc); \
-	 total_seconds=$$((num_targets * fuzz_seconds)); \
-	 echo ""; \
-	 echo "Fuzz targets to run:"; \
-	 echo "$$fuzz_targets" | while read -r t; do echo "  - $$t"; done; \
-	 echo ""; \
-	 echo "Number of targets: $$num_targets"; \
-	 echo "Time per target: $$fuzzTime"; \
-	 echo "Estimated total time: $$total_seconds seconds"; \
-	 echo ""; \
-	 failed=0; \
-	 current=0; \
-	 remaining_seconds=$$total_seconds; \
-		 echo "$$fuzz_targets" | while read -r func; do \
-		 	 current=$$((current + 1)); \
-		 	 echo ""; \
-		 	 echo "[$$current/$$num_targets] Fuzzing $$func"; \
-		 	 testdata_dir="./tests/testdata/fuzz/$$func"; \
-		 	 if [ -d "$$testdata_dir" ]; then \
-		 	 	 preexisting_dir=1; \
-		 	 else \
-		 	 	 preexisting_dir=0; \
-		 	 	 mkdir -p "$$testdata_dir"; \
-		 	 fi; \
-		 if ! GOCACHE="$$gocache_dir" GOMODCACHE="$$gomodcache_dir" go test ./tests -run='^$$' -fuzz="^$${func}$$" -fuzztime="$$fuzzTime"; then \
-		 	 failed=1; \
-		 	 latest_crasher=$$(ls -t "$$testdata_dir" | head -n 1); \
-		 	 if [ -n "$$latest_crasher" ]; then \
-		 	 	 echo "Crasher found for $$func. Crashing input:"; \
-		 	 	 cat "$$testdata_dir/$$latest_crasher"; \
-		 	 else \
-		 	 	 echo "Fuzzing failed for $$func, but no crasher file was written (run may have been interrupted)."; \
-		 	 fi; \
+	repo_root=$$(cd .. && pwd); \
+	gocache_dir="$$repo_root/.gocache"; \
+	gomodcache_dir=$$(go env GOMODCACHE); \
+	mkdir -p "$$gocache_dir"; \
+	cd "$$repo_root"; \
+	fuzz_targets=$$(GOCACHE="$$gocache_dir" GOMODCACHE="$$gomodcache_dir" go test ./tests -list '^Fuzz' | grep '^Fuzz'); \
+	num_targets=$$(echo "$$fuzz_targets" | wc -l | tr -d ' '); \
+	fuzz_seconds=$$(echo "$$fuzzTime" | sed 's/s$$//; s/m$$/*60/; s/h$$/*3600/' | bc); \
+	total_seconds=$$((num_targets * fuzz_seconds)); \
+	echo ""; \
+	echo "Fuzz targets to run:"; \
+	echo "$$fuzz_targets" | while read -r t; do echo "  - $$t"; done; \
+	echo ""; \
+	echo "Number of targets: $$num_targets"; \
+	echo "Time per target: $$fuzzTime"; \
+	echo "Estimated total time: $$total_seconds seconds"; \
+	echo ""; \
+	failed=0; \
+	current=0; \
+	remaining_seconds=$$total_seconds; \
+	echo "$$fuzz_targets" | while read -r func; do \
+		 current=$$((current + 1)); \
+		 echo ""; \
+		 echo "[$$current/$$num_targets] Fuzzing $$func"; \
+		 testdata_dir="./tests/testdata/fuzz/$$func"; \
+		 if [ -d "$$testdata_dir" ]; then \
+		 	 preexisting_dir=1; \
 		 else \
-		 	 echo "No crasher found for $$func."; \
+		 	 preexisting_dir=0; \
+		 	 mkdir -p "$$testdata_dir"; \
 		 fi; \
-		 	 if [ $$preexisting_dir -eq 0 ] && [ -d "$$testdata_dir" ] && [ -z "$$(ls -A "$$testdata_dir")" ]; then \
-		 	 	 rmdir "$$testdata_dir"; \
-		 	 fi; \
-	 	 remaining_seconds=$$((remaining_seconds - fuzz_seconds)); \
-	 	 if [ $$remaining_seconds -gt 0 ]; then \
-	 	 	 echo ""; \
-	 	 	 echo "Estimated remaining time: $$remaining_seconds seconds"; \
-	 	 fi; \
-	 done; \
-	 exit $$failed
+	if ! GOCACHE="$$gocache_dir" GOMODCACHE="$$gomodcache_dir" go test ./tests -run='^$$' -fuzz="^$${func}$$" -fuzztime="$$fuzzTime"; then \
+		 failed=1; \
+		 latest_crasher=$$(ls -t "$$testdata_dir" | head -n 1); \
+		 if [ -n "$$latest_crasher" ]; then \
+		 	 echo "Crasher found for $$func. Crashing input:"; \
+		 	 cat "$$testdata_dir/$$latest_crasher"; \
+		 else \
+		 	 echo "Fuzzing failed for $$func, but no crasher file was written (run may have been interrupted)."; \
+		 fi; \
+	else \
+		 echo "No crasher found for $$func."; \
+	fi; \
+		 if [ $$preexisting_dir -eq 0 ] && [ -d "$$testdata_dir" ] && [ -z "$$(ls -A "$$testdata_dir")" ]; then \
+		 	 rmdir "$$testdata_dir"; \
+		 fi; \
+	remaining_seconds=$$((remaining_seconds - fuzz_seconds)); \
+	if [ $$remaining_seconds -gt 0 ]; then \
+		 echo ""; \
+		 echo "Estimated remaining time: $$remaining_seconds seconds"; \
+	fi; \
+	done; \
+	exit $$failed
 
 .PHONY: bench
 bench:
 	@echo "Running benchmarks ..."
 	@bench_regex=$${BENCH:-'.*Suites'}; \
-	 bench_time=$${BENCHTIME:-5s}; \
-	 go test -run '^$$' -bench "$$bench_regex" -benchmem -benchtime "$$bench_time" ../tests
+	bench_time=$${BENCHTIME:-5s}; \
+	go test -run '^$$' -bench "$$bench_regex" -benchmem -benchtime "$$bench_time" ../tests
 
 .PHONY: release
 release:

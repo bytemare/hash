@@ -1,16 +1,16 @@
 # Contributing
 
-Thanks for investing time in improving this module! Pair this workflow guide with the technical guidance in [docs/architecture_and_guidelines.md](../docs/architecture_and_guidelines.md) and the security rationale in [docs/secure_design.md](../docs/secure_design.md).
+Thanks for investing time in improving this module! Pair this workflow guide with the technical guidance in [docs/architecture_and_guidelines.md](../docs/architecture_and_guidelines.md) and the security rationale in [docs/security_model.md](../docs/security_model.md).
 
 ## 1. Before You Start
 
 - Review the [Code of Conduct](CODE_OF_CONDUCT.md). Participating implies acceptance of its terms.
 - Search existing [issues](https://github.com/bytemare/hash/issues) and pull requests to avoid duplicating work. For substantial or breaking changes, open an issue first so we can agree on scope.
-- Familiarise yourself with the architecture and testing expectations in the documents linked above.
+- Familiarize yourself with the architecture and testing expectations in the documents linked above.
 
 ## 2. Development Environment
 
-- One among the three latest go versions (CI runs the current stable toolchain and the two previous releases).
+- One of the three latest Go versions (CI runs the current stable toolchain and the two previous releases).
 - `git`, `make`, and a POSIX-compatible shell.
 - Optional tools used by CI (installed automatically in workflows but helpful locally): `golangci-lint`, `govulncheck`, and other tooling you can install with `make update-linters`.
 
@@ -31,8 +31,7 @@ Thanks for investing time in improving this module! Pair this workflow guide wit
 
 1. Run the paved commands before pushing:
    ```bash
-   cd .github
-   make lint vuln test cover fuzz
+   make -C .github lint vulncheck test cover fuzz
    ```
    These targets mirror the CI tests (golangci-lint, `go test`, fuzzing, `govulncheck`, etc.).
 2. Ensure `go mod tidy` produces no diff and that coverage does not regress meaningfully. If coverage drops, explain why in the pull request.
@@ -55,7 +54,7 @@ Thanks for investing time in improving this module! Pair this workflow guide wit
 ## 8. Issue Guidance
 
 - Include reproduction steps, expected versus actual behaviour, and environment details (Go version, OS/arch).
-- For vulnerabilities, use the private GitHub Security Advisory form rather than public issues.
+- For vulnerabilities, follow the process in [SECURITY.md](SECURITY.md) rather than opening a public issue.
 - Feature requests should describe the use case and, when possible, sketch the desired API.
 
 ## 9. Releases and Post-Merge Tasks
@@ -65,7 +64,8 @@ Thanks for investing time in improving this module! Pair this workflow guide wit
 
 ## 10. Further Reading
 
-- Design and security: [docs/design_and_security.md](../docs/design_and_security.md)
+- Security model and assurance case: [docs/security_model.md](../docs/security_model.md)
+- Architecture and engineering guidelines: [docs/architecture_and_guidelines.md](../docs/architecture_and_guidelines.md)
 - Governance model: [docs/governance.md](../docs/governance.md)
 - Roadmap and open initiatives: [docs/roadmap.md](../docs/roadmap.md)
 

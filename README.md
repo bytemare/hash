@@ -41,8 +41,7 @@ See [`examples_test.go`](examples_test.go) for additional HMAC, HKDF extract/exp
 
 ## Versioning
 
-[SemVer](https://semver.org) is used for versioning. For the versions
-available, see the [tags on the repository](https://github.com/bytemare/opaque/tags).
+[SemVer](https://semver.org) is used for versioning. For the versions available, see the [tags on the repository](https://github.com/bytemare/hash/tags).
 
 ## Release Integrity (SLSA Level 3)
 Releases are built with the reusable [bytemare/slsa](https://github.com/bytemare/slsa) workflow and ship the evidence required for SLSA Level 3 compliance:
