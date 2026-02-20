@@ -34,7 +34,7 @@ The repository intentionally uses a small flat package structure rather than an 
 The library panics for **programmer errors**, not runtime failures.
 
 | Condition | Example | Rationale |
-|-----------|---------|-----------|
+| ----------- | --------- | ----------- |
 | HMAC key length exceeds digest size | `hash.SHA256.GetHashFunction().Hmac(msg, oversizedKey)` | Enforces a strict usage profile and prevents silent acceptance of insecure key-handling assumptions. |
 | XOF read request is non-zero and below configured output size | `hash.SHAKE128.New().Read(1)` | Prevents accidental output truncation below configured security expectations. |
 | Invalid BLAKE2X output size configuration | `hash.BLAKE2XS.New().SetOutputSize(65535)` | Backend constructors reject unsupported sizes; panic surfaces invalid caller configuration immediately. |

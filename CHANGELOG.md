@@ -21,6 +21,6 @@ For releases prior to this changelog, see [GitHub Releases](https://github.com/b
 ### Releasing
 - SLSA Level 3 provenance generation integrated into release workflow.
 
-### Documentation
+### Documentation Updates
 - Added governance and releasing documents to docs/
 - Upgraded Code of Conduct to Contributor Covenant 3.0.
