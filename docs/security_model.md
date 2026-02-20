@@ -14,12 +14,15 @@ It focuses on misuse resistance, trust boundaries, and assurance evidence for th
 
 ### 1.2 Trust Boundaries
 
-1. **Caller -> Public API (`hash.Hash`, `Hasher`, `Fixed`, `ExtendableHash`)**
-  - Untrusted inputs cross this boundary: algorithm identifiers, message bytes, lengths, and keying material.
-2. **Public API -> Internal registry and algorithm wrappers**
-  - The package maps IDs to constructors and metadata tables, then dispatches to fixed or XOF implementations.
-3. **Internal wrappers -> Cryptographic backends and platform/runtime**
-  - Cryptographic operations are delegated to Go standard library and `golang.org/x/crypto` implementations.
+1. **Caller -> Public API (`hash.Hash`, `Hasher`, `Fixed`, `ExtendableHash`)**:
+Untrusted inputs cross this boundary: algorithm identifiers, message bytes,
+lengths, and keying material.
+2. **Public API -> Internal registry and algorithm wrappers**: The package maps
+IDs to constructors and metadata tables, then dispatches to fixed or XOF
+implementations.
+3. **Internal wrappers -> Cryptographic backends and platform/runtime**:
+Cryptographic operations are delegated to Go standard library and
+`golang.org/x/crypto` implementations.
 
 ### 1.3 STRIDE Analysis
 

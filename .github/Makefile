@@ -85,26 +85,26 @@ fuzz:
 		echo ""; \
 		echo "[$$current/$$num_targets] Fuzzing $$func"; \
 		testdata_dir="./tests/testdata/fuzz/$$func"; \
-		if [ -d "$$testdata_dir" ]; then \
-			 preexisting_dir=1; \
-		else \
-			 preexisting_dir=0; \
-			 mkdir -p "$$testdata_dir"; \
+			if [ -d "$$testdata_dir" ]; then \
+				preexisting_dir=1; \
+			else \
+				preexisting_dir=0; \
+				mkdir -p "$$testdata_dir"; \
 		fi; \
 	if ! GOCACHE="$$gocache_dir" GOMODCACHE="$$gomodcache_dir" go test ./tests -run='^$$' -fuzz="^$${func}$$" -fuzztime="$$fuzzTime"; then \
 		failed=1; \
 		latest_crasher=$$(ls -t "$$testdata_dir" | head -n 1); \
-		if [ -n "$$latest_crasher" ]; then \
-			 echo "Crasher found for $$func. Crashing input:"; \
-			 cat "$$testdata_dir/$$latest_crasher"; \
-		else \
-			 echo "Fuzzing failed for $$func, but no crasher file was written (run may have been interrupted)."; \
+			if [ -n "$$latest_crasher" ]; then \
+				echo "Crasher found for $$func. Crashing input:"; \
+				cat "$$testdata_dir/$$latest_crasher"; \
+			else \
+				echo "Fuzzing failed for $$func, but no crasher file was written (run may have been interrupted)."; \
 		fi; \
 	else \
 		echo "No crasher found for $$func."; \
 	fi; \
-		if [ $$preexisting_dir -eq 0 ] && [ -d "$$testdata_dir" ] && [ -z "$$(ls -A "$$testdata_dir")" ]; then \
-			 rmdir "$$testdata_dir"; \
+			if [ $$preexisting_dir -eq 0 ] && [ -d "$$testdata_dir" ] && [ -z "$$(ls -A "$$testdata_dir")" ]; then \
+				rmdir "$$testdata_dir"; \
 		fi; \
 	remaining_seconds=$$((remaining_seconds - fuzz_seconds)); \
 	if [ $$remaining_seconds -gt 0 ]; then \
@@ -126,8 +126,8 @@ release:
 	@echo "Creating a new release ..."
 	@tag=$${tag:-}; \
 		if [ -z "$$tag" ]; then \
-			 echo "Error: tag variable is not set. Use 'make release tag=vX.Y.Z'"; \
-			 exit 1; \
+			echo "Error: tag variable is not set. Use 'make release tag=vX.Y.Z'"; \
+			exit 1; \
 		fi; \
 		git fetch origin; \
 	if ! git tag -s -a "$$tag" -m "chore: cut $$tag"; then \
