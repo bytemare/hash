@@ -36,9 +36,9 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    uses: bytemare/slsa/.github/workflows/slsa.yaml@b7499f9eee9c7c6b156ad3a54a56d0dca1910992
+    uses: bytemare/slsa/.github/workflows/slsa.yaml@eaa15be26e15b6ed07cb096fc16653fdc492a45d
     with:
-      workflow_ref: b7499f9eee9c7c6b156ad3a54a56d0dca1910992
+      workflow_ref: eaa15be26e15b6ed07cb096fc16653fdc492a45d
       repo: ${{ github.repository }}
       tag: ${{ github.event.inputs.tag }}
       mode: ${{ github.event.inputs.mode || 'full' }}
