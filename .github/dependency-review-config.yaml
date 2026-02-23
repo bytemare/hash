@@ -16,6 +16,7 @@ allow-licenses:
   - ISC
   - Unlicense
   - CC0-1.0
+  - LicenseRef-scancode-google-patent-license-golang
 
 # Allow first-party GitHub Actions where license detection may fail
 # GitHub Actions don't have standardized license metadata in their manifests,
