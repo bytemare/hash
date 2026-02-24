@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 //
-// Copyright (C) 2024 Daniel Bourdrez. All Rights Reserved.
+// Copyright (C) 2025 Daniel Bourdrez. All Rights Reserved.
 //
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree or at
@@ -9,14 +9,14 @@
 package hash
 
 import (
+	"crypto/hkdf"
 	"crypto/hmac"
 	"crypto/sha256"
+	"crypto/sha3"
 	"crypto/sha512"
 	"errors"
+	"fmt"
 	"hash"
-
-	"crypto/hkdf"
-	"crypto/sha3"
 )
 
 const (
@@ -92,7 +92,7 @@ func (h *Fixed) Read(_ int) []byte {
 
 // Write implements io.Writer.
 func (h *Fixed) Write(input []byte) (int, error) {
-	n, _ := h.hash.Write(input)
+	n, _ := h.hash.Write(input) // never fails.
 	return n, nil
 }
 
@@ -139,39 +139,49 @@ func (h *Fixed) Hmac(message, key []byte) []byte {
 	}
 
 	hm := hmac.New(h.f, key)
-	_, _ = hm.Write(message)
+	_, _ = hm.Write(message) // never fails.
 
 	return hm.Sum(nil)
 }
 
 // HKDF is an "extract-then-expand" HMAC based Key derivation function,
 // where info is the specific usage identifying information.
-func (h *Fixed) HKDF(secret, salt, info []byte, length int) []byte {
+func (h *Fixed) HKDF(secret, salt, info []byte, length int) ([]byte, error) {
 	if length == 0 {
 		length = h.id.Size()
 	}
 
-	out, _ := hkdf.Key(h.f, secret, salt, string(info), length)
+	out, err := hkdf.Key(h.f, secret, salt, string(info), length)
+	if err != nil {
+		return nil, fmt.Errorf("%s %w", h.id, err)
+	}
 
-	return out
+	return out, nil
 }
 
 // HKDFExtract is an "extract" only HKDF, where the secret and salt are used to generate a pseudorandom key. This key
 // can then be used in multiple HKDFExpand calls to derive individual different keys.
-func (h *Fixed) HKDFExtract(secret, salt []byte) []byte {
-	out, _ := hkdf.Extract(h.f, secret, salt)
+func (h *Fixed) HKDFExtract(secret, salt []byte) ([]byte, error) {
+	out, err := hkdf.Extract(h.f, secret, salt)
+	if err != nil {
+		// unreachable as we don't use the FIPS 140-only mode.
+		return nil, fmt.Errorf("%s %w", h.id, err)
+	}
 
-	return out
+	return out, nil
 }
 
 // HKDFExpand is an "expand" only HKDF, where the key should be an already random/hashed input,
 // and info specific key usage identifying information.
-func (h *Fixed) HKDFExpand(pseudorandomKey, info []byte, length int) []byte {
+func (h *Fixed) HKDFExpand(pseudorandomKey, info []byte, length int) ([]byte, error) {
 	if length == 0 {
 		length = h.id.Size()
 	}
 
-	out, _ := hkdf.Expand(h.f, pseudorandomKey, string(info), length)
+	out, err := hkdf.Expand(h.f, pseudorandomKey, string(info), length)
+	if err != nil {
+		return nil, fmt.Errorf("%s %w", h.id, err)
+	}
 
-	return out
+	return out, nil
 }

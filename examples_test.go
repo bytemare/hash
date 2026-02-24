@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 //
-// Copyright (C) 2024 Daniel Bourdrez. All Rights Reserved.
+// Copyright (C) 2025 Daniel Bourdrez. All Rights Reserved.
 //
 // This source code is licensed under the MIT license found in the
 // LICENSE file in the root directory of this source tree or at
@@ -46,7 +46,11 @@ func Example_hkdf() {
 	outputLength := 32
 	h := hash.SHA256
 
-	hkdf := h.GetHashFunction().HKDF(secret, salt, info, outputLength)
+	hkdf, err := h.GetHashFunction().HKDF(secret, salt, info, outputLength)
+	if err != nil {
+		panic(err)
+	}
+
 	fmt.Printf(
 		"HKDF(%s) of (%s,%s,%s) for %d bytes = %s\n",
 		h,
@@ -69,7 +73,10 @@ func Example_hkdf_extract_expand() {
 	outputLength := 32
 	h := hash.SHA256.GetHashFunction()
 
-	prk := h.HKDFExtract(secret, salt)
+	prk, err := h.HKDFExtract(secret, salt)
+	if err != nil {
+		panic(err)
+	}
 
 	fmt.Printf(
 		"HKDF-Expanded output keys from extracted pseudorandom key %q on %d bytes\n",
@@ -77,7 +84,11 @@ func Example_hkdf_extract_expand() {
 		outputLength,
 	)
 	for _, info := range keyInfo {
-		key := h.HKDFExpand(prk, []byte(info), outputLength)
+		key, err := h.HKDFExpand(prk, []byte(info), outputLength)
+		if err != nil {
+			panic(err)
+		}
+
 		fmt.Printf("%s = %s\n", info, hex.EncodeToString(key))
 	}
 
