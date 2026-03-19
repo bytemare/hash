@@ -134,7 +134,10 @@ func (h *Fixed) GetXOF() *ExtendableHash {
 
 // Hmac wraps the built-in hmac.
 func (h *Fixed) Hmac(message, key []byte) []byte {
-	if len(key) > h.id.Size() {
+	if len(key) > h.id.BlockSize() {
+		// HMAC keys longer than the block size are first hashed to reduce their size,
+		// but this changes the advertised security level of the HMAC key, so we
+		// disallow it to avoid confusion.
 		panic(errHmacKeySize)
 	}
 
