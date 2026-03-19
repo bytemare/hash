@@ -5,43 +5,43 @@ This project publishes Go modules following Semantic Versioning. Releases are co
 ## Release Checklist
 
 1. **Plan the version**
-   - Determine the next SemVer tag (`vMAJOR.MINOR.PATCH`).
-   - Open or update an issue/PR describing notable changes.
+    - Determine the next SemVer tag (`vMAJOR.MINOR.PATCH`).
+    - Open or update an issue/PR describing notable changes.
 
 2. **Update documentation**
-   - Review [CHANGELOG.md](../CHANGELOG.md) and make sure all user-facing changes are captured under `[Unreleased]`.
-   - Move the `[Unreleased]` entries into a new version section named `vx.y.z. - DD/MM/YYYY`.
-   - Verify README snippets and policy docs still apply.
+    - Review [CHANGELOG.md](../CHANGELOG.md) and make sure all user-facing changes are captured under `[Unreleased]`.
+    - Move the `[Unreleased]` entries into a new version section named `vx.y.z. - DD/MM/YYYY`.
+    - Verify README snippets and policy docs still apply.
 
 3. **Run validation locally**
 
-   Run the validation suite as described in [CONTRIBUTING.md §5](../.github/CONTRIBUTING.md#5-quality-checks):
+    Run the validation suite as described in [CONTRIBUTING.md §5](../.github/CONTRIBUTING.md#5-quality-checks):
 
-   ```bash
-   make -C .github lint
-   FUZZTIME=1s make -C .github check
-   make -C .github lint-config
-   FUZZTIME=10s make -C .github fuzz
-   ```
+    ```bash
+    make -C .github lint
+    FUZZTIME=1s make -C .github check
+    make -C .github lint-config
+    FUZZTIME=10s make -C .github fuzz
+    ```
 
-   `lint-config` validates the GolangCI-Lint configuration schema and may require network access.
+    `lint-config` validates the GolangCI-Lint configuration schema and may require network access.
 
 4. **Tag and publish a new release**
-   ```bash
-   make -C .github release tag=vX.Y.Z
-   ```
+    ```bash
+    make -C .github release tag=vX.Y.Z
+    ```
 
 5. **Let automation publish artifacts**
-   - Pushing the tag triggers `.github/workflows/wf-release.yaml`.
-   - The workflow delegates release packaging and provenance tasks to a pinned reusable SLSA workflow.
-   - Monitor the workflow run for success and confirm the expected release assets and attestations are attached (for example source archive, SBOM, and provenance `.intoto.jsonl` assets).
+    - Pushing the tag triggers `.github/workflows/wf-release.yaml`.
+    - The workflow delegates release packaging and provenance tasks to a pinned reusable SLSA workflow.
+    - Monitor the workflow run for success and confirm the expected release assets and attestations are attached (for example source archive, SBOM, and provenance `.intoto.jsonl` assets).
 
 6. **Publish notes**
-   - If the automated release does not include human-readable notes, edit the GitHub release, paste the `CHANGELOG.md` entry, and save.
+    - If the automated release does not include human-readable notes, edit the GitHub release, paste the `CHANGELOG.md` entry, and save.
 
 7. **Post-release follow-up**
-   - Announce the release in the relevant issue or discussion.
-   - Triage any downstream reports and start planning the next iteration.
+    - Announce the release in the relevant issue or discussion.
+    - Triage any downstream reports and start planning the next iteration.
 
 ## Emergency Releases
 
