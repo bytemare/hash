@@ -4,6 +4,9 @@ This package provides High-level Go wrappers for standard hash functions, unifyi
 It unifies Merkle–Damgård and extendable-output functions behind a single API, providing HMAC and HKDF helpers along with consistent metadata (block sizes, security strength, availability). Hashers are immutable handles that produce fresh state,
 preventing cross-call contamination and enforcing sane defaults for sizes.
 
+HMAC key sizes longer than the hash function's block size create a panic. Standard HMAC hashes longer keys, but that reduces the effective security level advertised by the original key size.
+We encourage using appropriate key lengths.
+
 ## Import
 
 ```go

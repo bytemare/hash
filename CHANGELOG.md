@@ -9,6 +9,12 @@ For releases prior to this changelog, see [GitHub Releases](https://github.com/b
 
 ## [Unreleased]
 
+## v0.6.1 - 19/03/2026
+
+### Changed
+- Updated dependencies.
+- Fixed HMAC key length validation to check against the block size instead of the output size.
+
 ### Documentation
 - Replaced documentation templates with repository-specific architecture and security model guidance.
 - Consolidated security and architecture guidance into `docs/security_model.md` and `docs/architecture_and_guidelines.md`.

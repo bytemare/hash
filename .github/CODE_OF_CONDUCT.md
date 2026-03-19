@@ -52,7 +52,7 @@ Tensions can occur between community members even when they are trying their bes
 
 When an incident does occur, it is important to report it promptly. To report a Code of
 Conduct violation, open a private discussion with the maintainer via
-[GitHub Discussions](https://github.com/bytemare/hash/discussions) (select "New discussion"
+[GitHub Discussions](https://github.com/bytemare/ksf/discussions) (select "New discussion"
 and choose a private category if available) or email the maintainer directly. For
 **security vulnerabilities**, use the separate process in [SECURITY.md](SECURITY.md).
 

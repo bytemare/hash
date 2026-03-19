@@ -38,7 +38,9 @@ func TestHmac(t *testing.T) {
 }
 
 func TestLongHmacKey(t *testing.T) {
-	longHMACKey := []byte("Length65aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+	longHMACKey := []byte(
+		"Length139aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+	)
 
 	testAll(t, func(h *testHash) {
 		if h.HashType == hash.FixedOutputLength {
