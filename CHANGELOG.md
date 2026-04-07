@@ -7,7 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 For releases prior to this changelog, see [GitHub Releases](https://github.com/bytemare/hash/releases).
 
-## [Unreleased]
+## v0.6.2 - 08/04/2026
+
+### Removed
+- 
 
 ## v0.6.1 - 19/03/2026
 

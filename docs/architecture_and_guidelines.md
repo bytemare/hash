@@ -80,8 +80,6 @@ Add or update tests when modifying or extending functionality.
 
 ## Related Documents
 
-- [CONTRIBUTING.md](../.github/CONTRIBUTING.md)
 - [security_model.md](security_model.md)
 - [roadmap.md](roadmap.md)
 - [releasing.md](releasing.md)
-- [governance.md](governance.md)
