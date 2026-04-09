@@ -27,7 +27,7 @@ permissions: {}
 
 jobs:
   Lint:
-    uses: bytemare/workflows/.github/workflows/suite-lint.yaml@e6762a2805d110f9eff20ea70c798c2bd406e416
+    uses: bytemare/workflows/.github/workflows/suite-lint.yaml@98f673361628d80f57af38608823fc764fc35841
     permissions:
       contents: read
       packages: read
@@ -43,7 +43,7 @@ jobs:
       super-linter-rules-path: .github
 
   Governance:
-    uses: bytemare/workflows/.github/workflows/suite-governance.yaml@e6762a2805d110f9eff20ea70c798c2bd406e416
+    uses: bytemare/workflows/.github/workflows/suite-governance.yaml@98f673361628d80f57af38608823fc764fc35841
     permissions:
       contents: write   # GitHub Dependency Submission API requirement to submit dependencies to the graph
       pull-requests: write  # needed when posting the summary
@@ -78,10 +78,6 @@ jobs:
       run_component_detection: true # submits PR dependency graph for polyglot repos
 
       # ---- High assurance gate ORT ----
-      ort_config_repository: "https://github.com/bytemare/ort-config" # optional: defaults to https://github.com/bytemare/ort-config
-      ort_config_revision: "12df6d5052d488e231389f451e8e7862575a7b43"     # optional: pin for a specific policy version of the policy repository
-      #ort_config_source: ".github/ort" # optional: additional repo specific configuration directory to use. If you have an .ort.yml config file put it there.
-      ort_config_target: "~/.ort/config" # optional: target directory to stage the policy configuration to, defaults to ~/.ort/config, because that's where ORT looks for it
       ort_fail_on: "violations"   # fail mode: violations|issues|never
       ort_cli_args: "-P ort.analyzer.enabledPackageManagers=GoMod"
       ort_extra_allowed_endpoints: >
@@ -101,7 +97,7 @@ jobs:
       scorecard: ${{ secrets.SCORECARD_TOKEN }}
 
   CodeScan:
-    uses: bytemare/workflows/.github/workflows/suite-codescan.yaml@e6762a2805d110f9eff20ea70c798c2bd406e416
+    uses: bytemare/workflows/.github/workflows/suite-codescan.yaml@98f673361628d80f57af38608823fc764fc35841
     permissions:
       contents: read
       security-events: write
