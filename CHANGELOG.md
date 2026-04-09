@@ -9,6 +9,11 @@ For releases prior to this changelog, see [GitHub Releases](https://github.com/b
 
 ## [Unreleased]
 
+## v0.6.2 - 08/04/2026
+
+### Removed
+- Removed community files and reuse the central ones from the bytemare/.github repository.
+
 ## v0.6.1 - 19/03/2026
 
 ### Changed

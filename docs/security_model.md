@@ -100,5 +100,4 @@ For vulnerability reporting and coordinated disclosure, use [.github/SECURITY.md
 
 - [architecture_and_guidelines.md](architecture_and_guidelines.md)
 - [releasing.md](releasing.md)
-- [governance.md](governance.md)
 - [roadmap.md](roadmap.md)

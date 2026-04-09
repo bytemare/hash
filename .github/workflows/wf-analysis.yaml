@@ -27,7 +27,7 @@ permissions: {}
 
 jobs:
   Lint:
-    uses: bytemare/workflows/.github/workflows/suite-lint.yaml@e965440e90e3d80e63473574eba1ffe5ba9443cd
+    uses: bytemare/workflows/.github/workflows/suite-lint.yaml@98f673361628d80f57af38608823fc764fc35841
     permissions:
       contents: read
       packages: read
@@ -39,11 +39,11 @@ jobs:
       super-linter: true
       super-linter-validate-all-codebase: true
       super-linter-enabled-linters: |
-        VALIDATE_BASH,VALIDATE_BASH_EXEC,VALIDATE_EDITORCONFIG,VALIDATE_ENV,VALIDATE_GITHUB_ACTIONS,VALIDATE_MARKDOWN,VALIDATE_YAML
+        VALIDATE_BASH,VALIDATE_BASH_EXEC,VALIDATE_EDITORCONFIG,VALIDATE_ENV,VALIDATE_GITHUB_ACTIONS,VALIDATE_GO_MODULES,VALIDATE_MARKDOWN,VALIDATE_YAML
       super-linter-rules-path: .github
 
   Governance:
-    uses: bytemare/workflows/.github/workflows/suite-governance.yaml@e965440e90e3d80e63473574eba1ffe5ba9443cd
+    uses: bytemare/workflows/.github/workflows/suite-governance.yaml@98f673361628d80f57af38608823fc764fc35841
     permissions:
       contents: write   # GitHub Dependency Submission API requirement to submit dependencies to the graph
       pull-requests: write  # needed when posting the summary
@@ -68,7 +68,7 @@ jobs:
       scorecard: true
       # Dependency Review
       dependency-review: true
-      dependency_review_config_file: .github/dependency-review-config.yaml
+      dependency_review_config_file: ".github/dependency-review-config.yaml"
       # OSS Review Toolkit (ORT)
       ort: true
       # ---- Baseline PR gate (fast, GitHub-native) ----
@@ -78,18 +78,26 @@ jobs:
       run_component_detection: true # submits PR dependency graph for polyglot repos
 
       # ---- High assurance gate ORT ----
-      ort_config_repository: https://github.com/oss-review-toolkit/ort-config # optional: defaults to https://github.com/oss-review-toolkit/ort-config
-      ort_config_revision: "34c5d317e44e86505d0d257f2c1076deda35d9df"     # optional: pin for a specific policy version of the policy repository
-      ort_config_source: ".github/ort" # optional: additional repo specific configuration directory to use. If you have an .ort.yml config file put it there.
-      ort_config_target: "~/.ort/config" # optional: target directory to stage the policy configuration to, defaults to ~/.ort/config, because that's where ORT looks for it
       ort_fail_on: "violations"   # fail mode: violations|issues|never
       ort_cli_args: "-P ort.analyzer.enabledPackageManagers=GoMod"
+      ort_extra_allowed_endpoints: >
+        dl.google.com:443
+        filippo.io:443
+        go.dev:443
+        go.googlesource.com:443
+        golang.org:443
+        proxy.golang.org:443
+        hosted-compute-request-orchestrator-prod-iad-01.githubapp.com:443
+        hosted-compute-watchdog-prod-eus-01.githubapp.com:443
+        storage.googleapis.com:443
+        sum.golang.org:443
+
     secrets:
       # OpenSSF Scorecard token
       scorecard: ${{ secrets.SCORECARD_TOKEN }}
 
   CodeScan:
-    uses: bytemare/workflows/.github/workflows/suite-codescan.yaml@e965440e90e3d80e63473574eba1ffe5ba9443cd
+    uses: bytemare/workflows/.github/workflows/suite-codescan.yaml@98f673361628d80f57af38608823fc764fc35841
     permissions:
       contents: read
       security-events: write
@@ -102,16 +110,19 @@ jobs:
       # CodeQL
       codeql: true
       codeql-language: go # comma-separated list supported
+      codeql-go-check-latest: true
       # SonarQube
       sonarqube: true
       sonarqube-configuration: .github/sonar-project.properties
       # Shared coverage generation (one-time, consumed by SonarQube and Codecov)
       coverage-enabled: true
       coverage-go-enabled: true
+      coverage-go-check-latest: true
       coverage-go-command: "make -C .github cover"
       coverage-go-report-path: ".github/coverage.out"
       # Govulncheck
       govulncheck: true
+      govulncheck-go-check-latest: true
       # Gitleaks
       gitleaks: true
       # Codecov upload
