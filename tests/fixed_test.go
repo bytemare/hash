@@ -140,7 +140,7 @@ func TestHKDFExtract_KeyTooShort(t *testing.T) {
 			shortKey := randomBytes((112 / 8) - 1) // threshold is 14 bytes
 
 			_, err := hasher.HKDFExtract(shortKey, testData.salt)
-			if fips140.Enabled() && err == nil {
+			if fips140.Enforced() && err == nil {
 				t.Fatal("expected error on excessive length")
 			}
 		}
@@ -157,7 +157,7 @@ func TestHKDFExtract_NotFIPS140Hash(t *testing.T) {
 			}
 
 			_, err := hasher.HKDFExtract(testData.secret, testData.salt)
-			if fips140.Enabled() && err == nil {
+			if fips140.Enforced() && err == nil {
 				t.Fatal("expected error on non FIPS140 hash")
 			}
 		}
